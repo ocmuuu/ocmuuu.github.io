@@ -7,8 +7,7 @@ from urllib.parse import quote, unquote
 # Configuration
 PORT = 8000
 DIRECTORY = "."  # Serve the current directory
-FOLDERS = [f"page{i}" for i in range(1, 348)]  # page1 to page140
-#FOLDERS = [f"temp"]  # page1 to page140
+FOLDERS = [f"page{i}" for i in range(1, 348)]  # page1 to page347
 IMAGE_EXTENSIONS = {'.webp', '.jpeg', '.png', '.jpg'}  # Supported image extensions
 
 # Custom handler to serve the slideshow page and handle deletion
@@ -29,7 +28,7 @@ class SlideshowHandler(http.server.SimpleHTTPRequestHandler):
             self.send_error(404, "Endpoint not found")
 
     def send_slideshow_page(self):
-        # Collect all image paths from page1 to page140
+        # Collect all image paths from page1 to page347
         images = []
         for folder in FOLDERS:
             folder_path = os.path.join(DIRECTORY, folder)
@@ -90,7 +89,7 @@ class SlideshowHandler(http.server.SimpleHTTPRequestHandler):
 
                     function changeBackground() {{
                         if (images.length === 0) {{
-                            $('body').html('<h1>No images found in page1 to page140.</h1>');
+                            $('body').html('<h1>No images found in page1 to page347.</h1>');
                             return;
                         }}
                         $('body').css({{ 'background-image': `url('${{images[currentIndex]}}')`, 'background-repeat': 'repeat' }});
@@ -121,7 +120,7 @@ class SlideshowHandler(http.server.SimpleHTTPRequestHandler):
                             // Remove deleted image from array
                             images.splice(currentIndex, 1);
                             if (images.length === 0) {{
-                                $('body').html('<h1>No images found in page1 to page140.</h1>');
+                                $('body').html('<h1>No images found in page1 to page347.</h1>');
                                 return;
                             }}
                             // Adjust index if at the end
@@ -133,6 +132,15 @@ class SlideshowHandler(http.server.SimpleHTTPRequestHandler):
                             console.error('Delete failed:', xhr.responseText);
                             alert('Failed to delete image: ' + xhr.responseText);
                         }});
+                    }});
+
+                    // Keyboard controls for left and right arrow keys
+                    $(document).keydown(function(event) {{
+                        if (event.key === 'ArrowLeft') {{
+                            $('#prev').click(); // Trigger previous button click
+                        }} else if (event.key === 'ArrowRight') {{
+                            $('#next').click(); // Trigger next button click
+                        }}
                     }});
                 }});
             </script>
